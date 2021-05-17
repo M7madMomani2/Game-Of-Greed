@@ -102,7 +102,7 @@ class Game :
                         print(f'Thanks for playing. You earned {score} points')
                         flag = False
                     else:
-                        dice_num_remaining-=1
+                        # dice_num_remaining-=1
                         new_list = list(dice_to_keep) ### Here ###
                         # print(new_list)
                         user_t=[]
@@ -111,13 +111,14 @@ class Game :
                         start_play = GameLogic()
                         banker = Banker()
                         num_shelf += start_play.calculate_score(tuple(user_t))
-                        print(f'You have {num_shelf} unbanked points and {dice_num_remaining} dice remaining')
+                        print(f'You have {num_shelf} unbanked points and {dice_num_remaining-len(new_list)} dice remaining')
                         next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
                         if next_input == 'q':
                             print(f'Total score is {score} points')
                             print(f'Thanks for playing. You earned {score} points')
                             flag = False
                         elif next_input == 'b':
+                            dice_num_remaining = 6
                             banker.shelf(num_shelf)
                             banked = banker.bank()
                             num_shelf=0
@@ -128,7 +129,7 @@ class Game :
                             break
                         elif next_input == 'r':
                             num_shelf+=banker.shelved
-                            dice_num_remaining= dice_num_remaining - 1
+                            dice_num_remaining-=1
                             flag = True
         else:
             print("invalid input ")
