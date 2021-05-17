@@ -103,10 +103,12 @@ Thanks for playing. You earned 0 points""")
                         flag = flag and True
                     else:
                         flag=False
-                print(tuple(user_t))
                 if flag:
+                    dice_num-=len(user_t)
                     print("im in ")
-                    print(start_play.calculate_score(tuple(user_t)))
+                    point=start_play.calculate_score(tuple(user_t))
+                    print(f"You have {point} unbanked points and {dice_num} dice remaining")
+                    
             Starting_round+=1
         else :
             print("invalid input ")
