@@ -69,11 +69,56 @@ class Banker :
 
     def clear_shelf (self):
         self.shelved=0
+
+
+
+class Game :
+    def welcome_message ():
+        Starting_round =1
+        dice_num =6
+
+        print("Welcome to Game of Greed")
+        user_in=input("Wanna play?")
+        if user_in=="n":
+            print("OK. Maybe another time")
+        elif user_in=="y":
+            print(f"Starting round {Starting_round}")
+            print(f"Rolling {dice_num} dice...")
+            start_play =GameLogic()
+            rolled=start_play.roll_dice(dice_num)
+            print(rolled)
+            user_in=input("Enter dice to keep (no spaces), or (q)uit: ")
+            if user_in=="q":
+                score = start_play.calculate_score(rolled)
+                print(f"""Total score is 0 points
+Thanks for playing. You earned 0 points""")
+            else :
+                user_in=list(user_in)
+                flag = True
+                user_t=[]
+                print(user_in)
+                for i in user_in :
+                    user_t.append(int(i))
+                    if int(i) in rolled:
+                        flag = flag and True
+                    else:
+                        flag=False
+                if flag:
+                    dice_num-=len(user_t)
+                    print("im in ")
+                    point=start_play.calculate_score(tuple(user_t))
+                    print(f"You have {point} unbanked points and {dice_num} dice remaining")
+                    
+            Starting_round+=1
+        else :
+            print("invalid input ")
+
+
 roll = GameLogic()
 
-
+play = Game.welcome_message()
 # print(roll.roll_dice(6))
-print(roll.calculate_score((3,3,5,5,6,6)))
+# print(roll.calculate_score((3,3,5,5,6,6)))
 # counting = Counter((1,1,3,3,5,5))
 # dice_common = counting.most_common()
 # print(dice_common)
