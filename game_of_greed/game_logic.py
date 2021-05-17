@@ -73,50 +73,69 @@ class Banker :
 
 
 class Game :
-    def welcome_message ():
-        Starting_round =1
-        dice_num =6
+    def __init__(self,roll=None):
+        self.roll = roll or GameLogic.roll_dice
 
-        print("Welcome to Game of Greed")
+
+    def play(self):
+        
+        print("Welcome to Game of Greed") 
         user_in=input("Wanna play?")
         if user_in=="n":
             print("OK. Maybe another time")
         elif user_in=="y":
-            print(f"Starting round {Starting_round}")
-            print(f"Rolling {dice_num} dice...")
-            start_play =GameLogic()
-            rolled=start_play.roll_dice(dice_num)
-            print(rolled)
-            user_in=input("Enter dice to keep (no spaces), or (q)uit: ")
-            if user_in=="q":
-                score = start_play.calculate_score(rolled)
-                print(f"""Total score is 0 points
-Thanks for playing. You earned 0 points""")
-            else :
-                user_in=list(user_in)
-                flag = True
-                user_t=[]
-                print(user_in)
-                for i in user_in :
-                    user_t.append(int(i))
-                    if int(i) in rolled:
-                        flag = flag and True
+            starting_round =1
+            dice_num_remaining =6
+            score = 0
+            num_shelf = 0
+            flag = True
+
+            while score < 10000 and flag ==True:
+                print(f"Starting round {starting_round}")
+                while flag == True:
+                    print(f"Rolling {dice_num_remaining} dice...")
+                    rolled = self.roll(dice_num_remaining)
+                    print(','.join([str(x) for x in rolled]))
+                    dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"
+                    if dice_to_keep == 'q':
+                        print(f'Total score is {score} points')
+                        print(f'Thanks for playing. You earned {score} points')
+                        flag = False
                     else:
-                        flag=False
-                if flag:
-                    dice_num-=len(user_t)
-                    print("im in ")
-                    point=start_play.calculate_score(tuple(user_t))
-                    print(f"You have {point} unbanked points and {dice_num} dice remaining")
-                    
-            Starting_round+=1
-        else :
+                        dice_num_remaining-=1
+                        new_list = list(dice_to_keep) ### Here ###
+                        # print(new_list)
+                        user_t=[]
+                        for i in new_list :
+                            user_t.append(int(i)) 
+                        start_play = GameLogic()
+                        banker = Banker()
+                        num_shelf += start_play.calculate_score(tuple(user_t))
+                        print(f'You have {num_shelf} unbanked points and {dice_num_remaining} dice remaining')
+                        next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
+                        if next_input == 'q':
+                            print(f'Total score is {score} points')
+                            print(f'Thanks for playing. You earned {score} points')
+                            flag = False
+                        elif next_input == 'b':
+                            banker.shelf(num_shelf)
+                            banked = banker.bank()
+                            num_shelf=0
+                            score+=banked
+                            print(f'You banked {banked} points in round {starting_round}')
+                            print(f'Total score is {score} points')
+                            starting_round+=1
+                            break
+                        elif next_input == 'r':
+                            num_shelf+=banker.shelved
+                            dice_num_remaining= dice_num_remaining - 1
+                            flag = True
+        else:
             print("invalid input ")
 
-
-roll = GameLogic()
-
-play = Game.welcome_message()
+if __name__ == '__main__':
+    play = Game()
+    play.play()
 # print(roll.roll_dice(6))
 # print(roll.calculate_score((3,3,5,5,6,6)))
 # counting = Counter((1,1,3,3,5,5))
