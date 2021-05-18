@@ -1,6 +1,6 @@
 import pytest
 from tests.flo import *
-from game_of_greed.game_logic import Game
+from game_of_greed.main import Game
 
 pytestmark = [pytest.mark.version_2]
 
