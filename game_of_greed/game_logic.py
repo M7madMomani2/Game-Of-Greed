@@ -7,7 +7,7 @@ class GameLogic:
         return tuple(randint(1,6) for _ in range(0,num_dice))
    
     @staticmethod
-    def calculate_score(roll_dice):
+    def get_scorers(roll_dice):
         """
         function will take a tuple of integers that represent a dice roll and return the srore of this roll 
         """
@@ -86,7 +86,7 @@ class Game :
 
     def welcome(self):
         print("Welcome to Game of Greed") 
-        user_in=input("Wanna play?")
+        user_in=input("(y)es to play or (n)o to decline\n> ")
         if user_in=="n":
             print("OK. Maybe another time")
         elif user_in=="y":
@@ -119,9 +119,9 @@ class Game :
                     for i in new_list : 
                         user_t.append(int(i)) 
                     start_play = GameLogic()
-                    self.num_shelf += start_play.calculate_score(tuple(user_t))
+                    self.num_shelf += start_play.get_scorers(tuple(user_t))
                     print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
-                    next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
+                    next_input = input(f'(r)oll again, (b)ank your points or (q)uit:\n> ')
                     if next_input == 'q':
                         self.quitter()                    
                     
@@ -133,8 +133,8 @@ class Game :
                 else:
                     print("Cheater!!! Or possibly made a typo...")
                     print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining} dice remaining')
-                    print(','.join([str(x) for x in rolled]))
-            dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"        
+                    print(f"***{(' '.join([str(x) for x in rolled]))}***")
+            dice_to_keep=input("Enter dice to keep, or (q)uit:\n> ") # "12"        
             if dice_to_keep == 'q':
                 self.quitter()      
             else:
@@ -152,7 +152,7 @@ class Game :
                     for i in new_list : 
                         user_t.append(int(i)) 
                     start_play = GameLogic()
-                    self.num_shelf += start_play.calculate_score(tuple(user_t))
+                    self.num_shelf += start_play.get_scorers(tuple(user_t))
                     print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
                     next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
                     if next_input == 'q':
@@ -186,7 +186,7 @@ class Game :
                         for i in new_list : 
                             user_t.append(int(i)) 
                         start_play = GameLogic()
-                        self.num_shelf += start_play.calculate_score(tuple(user_t))
+                        self.num_shelf += start_play.get_scorers(tuple(user_t))
                         print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
                         next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
                         if next_input == 'q':
@@ -206,7 +206,7 @@ class Game :
     
 
     def quitter(self):
-        print(f'Total score is {self.score} points')
+
         print(f'Thanks for playing. You earned {self.score} points')
         self.flag = False
 
@@ -240,7 +240,7 @@ if __name__ == '__main__':
     play = Game()
     play.welcome()
 # print(roll.roll_dice(6))
-# print(roll.calculate_score((3,3,5,5,6,6)))
+# print(roll.get_scorers((3,3,5,5,6,6)))
 # counting = Counter((1,1,3,3,5,5))
 # dice_common = counting.most_common()
 # print(dice_common)
