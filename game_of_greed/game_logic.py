@@ -73,6 +73,13 @@ class Banker :
 
 
 class Game :
+    starting_round =1
+    dice_num_remaining =6
+    score = 0
+    num_shelf = 0
+    flag = True
+    banker = Banker()
+
     def __init__(self,roll=None):
         self.roll = roll or GameLogic.roll_dice
 
@@ -89,70 +96,141 @@ class Game :
 
 
 
-
-    def play(self):
-        
-        starting_round =1
-        dice_num_remaining =6
-        score = 0
-        num_shelf = 0
-        flag = True
-
-        while score < 10000 and flag ==True:
-            print(f"Starting round {starting_round}")
-            while flag == True:
-                print(f"Rolling {dice_num_remaining} dice...")
-                rolled = self.roll(dice_num_remaining)
-                print(','.join([str(x) for x in rolled]))
-                dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"
-                if dice_to_keep == 'q':
-                    print(f'Total score is {score} points')
-                    print(f'Thanks for playing. You earned {score} points')
-                    flag = False
+    def start_round(self):
+        while self.flag == True:
+            print(f"Rolling {self.dice_num_remaining} dice...")
+            rolled = self.roll(self.dice_num_remaining)
+            print(','.join([str(x) for x in rolled]))
+            dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"        
+            if dice_to_keep == 'q':
+                self.quitter()      
+            else:
+                copy_rolled=list(rolled)
+                new_list = list(dice_to_keep) ### Here ###
+                counter_checker=0       
+                for x in new_list:
+                    for y in range(len(rolled)):
+                        if int(x)==copy_rolled[y]:
+                            copy_rolled[y]=0
+                            counter_checker+=1
+                            break
+                if counter_checker==len(new_list):
+                    user_t=[]
+                    for i in new_list : 
+                        user_t.append(int(i)) 
+                    start_play = GameLogic()
+                    self.num_shelf += start_play.calculate_score(tuple(user_t))
+                    print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
+                    next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
+                    if next_input == 'q':
+                        self.quitter()                    
+                    
+                    elif next_input == 'b':
+                        self.save_bank()                        
+                        break
+                    elif next_input == 'r':
+                        self.roll_again(new_list)                        
                 else:
+                    print("Cheater!!! Or possibly made a typo...")
+                    print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining} dice remaining')
+                    print(','.join([str(x) for x in rolled]))
+            dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"        
+            if dice_to_keep == 'q':
+                self.quitter()      
+            else:
+                copy_rolled=list(rolled)
+                new_list = list(dice_to_keep) ### Here ###
+                counter_checker=0       
+                for x in new_list:
+                    for y in range(len(rolled)):
+                        if int(x)==copy_rolled[y]:
+                            copy_rolled[y]=0
+                            counter_checker+=1
+                            break
+                if counter_checker==len(new_list):
+                    user_t=[]
+                    for i in new_list : 
+                        user_t.append(int(i)) 
+                    start_play = GameLogic()
+                    self.num_shelf += start_play.calculate_score(tuple(user_t))
+                    print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
+                    next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
+                    if next_input == 'q':
+                        self.quitter()                    
+                    
+                    elif next_input == 'b':
+                        self.save_bank()                        
+                        break
+                    elif next_input == 'r':
+                        self.roll_again(new_list)                        
+                else:
+                    # rewrite function to pick Cheaters 
+                    print("Cheater!!! Or possibly made a typo...")
+                    print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining} dice remaining')
+                    print(','.join([str(x) for x in rolled]))
+
+
+
+                    next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
                     copy_rolled=list(rolled)
                     new_list = list(dice_to_keep) ### Here ###
-                    counter_checker=0
-
+                    counter_checker=0       
                     for x in new_list:
                         for y in range(len(rolled)):
                             if int(x)==copy_rolled[y]:
                                 copy_rolled[y]=0
                                 counter_checker+=1
                                 break
-                    print("-------------------------------------------------------------------")
                     if counter_checker==len(new_list):
                         user_t=[]
                         for i in new_list : 
                             user_t.append(int(i)) 
                         start_play = GameLogic()
-                        banker = Banker()
-                        num_shelf += start_play.calculate_score(tuple(user_t))
-                        print(f'You have {num_shelf} unbanked points and {dice_num_remaining-len(new_list)} dice remaining')
+                        self.num_shelf += start_play.calculate_score(tuple(user_t))
+                        print(f'You have {self.num_shelf} unbanked points and {self.dice_num_remaining-len(new_list)} dice remaining')
                         next_input = input(f'(r)oll again, (b)ank your points or (q)uit ')
                         if next_input == 'q':
-                            print(f'Total score is {score} points')
-                            print(f'Thanks for playing. You earned {score} points')
-                            flag = False
+                            self.quitter()                    
+                        
                         elif next_input == 'b':
-                            dice_num_remaining = 6
-                            banker.shelf(num_shelf)
-                            banked = banker.bank()
-                            num_shelf=0
-                            score+=banked
-                            print(f'You banked {banked} points in round {starting_round}')
-                            print(f'Total score is {score} points')
-                            starting_round+=1
+                            self.save_bank()                        
                             break
                         elif next_input == 'r':
-                            num_shelf+=banker.shelved
-                            dice_num_remaining-=len(new_list)
-                            flag = True
+                            self.roll_again(new_list)                        
+                       
+                
+                       
 
-                    else:
-                        print("Cheater!!! Or possibly made a typo...")
-                        
-                    print("-------------------------------------------------------------------")
+
+
+    
+
+    def quitter(self):
+        print(f'Total score is {self.score} points')
+        print(f'Thanks for playing. You earned {self.score} points')
+        self.flag = False
+
+
+    def save_bank(self):
+        self.dice_num_remaining = 6
+        self.banker.shelf(self.num_shelf)
+        banked = self.banker.bank()
+        self.num_shelf=0
+        self.score+=banked
+        print(f'You banked {banked} points in round {self.starting_round}')
+        print(f'Total score is {self.score} points')
+        self.starting_round+=1
+    
+    def roll_again(self,new_list):                        
+        self.num_shelf+=self.banker.shelved
+        self.dice_num_remaining-=len(new_list)
+        self.flag = True        
+
+
+    def play(self):
+        while self.score < 10000 and self.flag ==True:
+            print(f"Starting round {self.starting_round}")
+            self.start_round()
 
 
 
