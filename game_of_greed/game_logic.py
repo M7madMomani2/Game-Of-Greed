@@ -77,36 +77,53 @@ class Game :
         self.roll = roll or GameLogic.roll_dice
 
 
-    def play(self):
-        
+    def welcome(self):
         print("Welcome to Game of Greed") 
         user_in=input("Wanna play?")
         if user_in=="n":
             print("OK. Maybe another time")
         elif user_in=="y":
-            starting_round =1
-            dice_num_remaining =6
-            score = 0
-            num_shelf = 0
-            flag = True
+            self.play()
+        else:
+            print("invalid input ")
 
-            while score < 10000 and flag ==True:
-                print(f"Starting round {starting_round}")
-                while flag == True:
-                    print(f"Rolling {dice_num_remaining} dice...")
-                    rolled = self.roll(dice_num_remaining)
-                    print(','.join([str(x) for x in rolled]))
-                    dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"
-                    if dice_to_keep == 'q':
-                        print(f'Total score is {score} points')
-                        print(f'Thanks for playing. You earned {score} points')
-                        flag = False
-                    else:
-                        # dice_num_remaining-=1
-                        new_list = list(dice_to_keep) ### Here ###
-                        # print(new_list)
+
+
+
+    def play(self):
+        
+        starting_round =1
+        dice_num_remaining =6
+        score = 0
+        num_shelf = 0
+        flag = True
+
+        while score < 10000 and flag ==True:
+            print(f"Starting round {starting_round}")
+            while flag == True:
+                print(f"Rolling {dice_num_remaining} dice...")
+                rolled = self.roll(dice_num_remaining)
+                print(','.join([str(x) for x in rolled]))
+                dice_to_keep=input("Enter dice to keep (no spaces), or (q)uit: ") # "12"
+                if dice_to_keep == 'q':
+                    print(f'Total score is {score} points')
+                    print(f'Thanks for playing. You earned {score} points')
+                    flag = False
+                else:
+                    copy_rolled=list(rolled)
+                    new_list = list(dice_to_keep) ### Here ###
+                    counter_checker=0
+
+                    for x in new_list:
+                        for y in range(len(rolled)):
+                            if int(x)==copy_rolled[y]:
+                                copy_rolled[y]=0
+                                counter_checker+=1
+                                break
+                    print("-------------------------------------------------------------------")
+                    if counter_checker==len(new_list):
                         user_t=[]
-                        for i in new_list :
+                        for i in new_list : 
                             user_t.append(int(i)) 
                         start_play = GameLogic()
                         banker = Banker()
@@ -129,14 +146,21 @@ class Game :
                             break
                         elif next_input == 'r':
                             num_shelf+=banker.shelved
-                            dice_num_remaining-=1
+                            dice_num_remaining-=len(new_list)
                             flag = True
-        else:
-            print("invalid input ")
+
+                    else:
+                        print("Cheater!!! Or possibly made a typo...")
+                        
+                    print("-------------------------------------------------------------------")
+
+
+
+    
 
 if __name__ == '__main__':
     play = Game()
-    play.play()
+    play.welcome()
 # print(roll.roll_dice(6))
 # print(roll.calculate_score((3,3,5,5,6,6)))
 # counting = Counter((1,1,3,3,5,5))
