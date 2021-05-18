@@ -1,9 +1,20 @@
+
 from random import randint
 from collections import Counter
 
 class GameLogic:
     def __init__(self) :
         counter=0
+
+    @staticmethod
+    def validate_keepers(roll, keepers):
+        roll_saved = Counter(roll)
+        saved_inputs = Counter(keepers)
+        check = True
+        for i in saved_inputs:
+            if saved_inputs[i] > roll_saved[i]:
+                check = False
+        return check
 
     @staticmethod
     def roll_dice(num_dice):

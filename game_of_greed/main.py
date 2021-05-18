@@ -1,3 +1,4 @@
+  
 from collections import Counter
 from game_of_greed.game_logic import GameLogic,Banker
 
@@ -27,7 +28,7 @@ class Game:
             self.roll_again()
 
     def quitter(self):
-        print(f'Total score is {self.score} points')
+        # print(f'Total score is {self.score} points')
         print(f'Thanks for playing. You earned {self.score} points')
         self.flag = True
         
@@ -78,7 +79,7 @@ class Game:
 
         print(f'Rolling {self.dice_num_remaining} dice...')
         roller = self.roller(self.dice_num_remaining)
-        print(f"***{' '.join([str(i) for i in roller])}***")
+        print(f"*** {' '.join([str(i) for i in roller])} ***")
         new_list = list(roller)
         validate = self.game.get_scorers(tuple([int(x) for x in new_list]))
 
@@ -92,7 +93,7 @@ class Game:
 
                 while valid == False:
                     print('Cheater!!! Or possibly made a typo...')
-                    print(f"***{' '.join([str(i) for i in roller])}***")
+                    print(f"*** {' '.join([str(i) for i in roller])} ***")
                     dice_to_keep = input("Enter dice to keep, or (q)uit:\n> ")
                     if dice_to_keep == 'q':
                         self.quitter()
