@@ -16,8 +16,6 @@ pytestmark = [pytest.mark.version_3]
         ((2, 3, 4), tuple()),
     ],
 )
-def test_get_scorers(test_input, expected):
+def test_get_back_one(test_input, expected):
     actual = GameLogic.get_scorers(test_input)
-    print(actual)
-    print(sorted(expected))
     assert sorted(actual) == sorted(expected)

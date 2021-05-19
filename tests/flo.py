@@ -1,16 +1,17 @@
 import builtins
-import difflib
-import sys
+from textwrap import dedent
 
 
 def diff(game_play_func, path="", sample=""):
     """runs a given game play function and compares output with contents of given simulation
+
     Args:
         game_play_func (function): function that plays game.
             MUST have key word argument 'roller'
         path (str, optional): File path to a simulation text tile. Defaults to "".
         sample (str, optional): Simulation text to use if no path provided.
             Defaults to "".
+
     Returns:
         list: Reports for any lines that differ
     """
@@ -35,9 +36,6 @@ def diff(game_play_func, path="", sample=""):
 
         nonlocal text
 
-        if not responses:
-            sys.exit(1)
-
         response = responses.pop(0)
 
         text += "".join(args) + response + "\n"
@@ -46,9 +44,6 @@ def diff(game_play_func, path="", sample=""):
 
     # inner function to mock rolling of dice
     def mock_roller(num):
-        if not rolls:
-            sys.exit(1)
-
         return rolls.pop(0)
 
     # store the "real" print & input so we can restore them later
@@ -108,6 +103,54 @@ def _find_differences(text, expected_lines):
 
     actual_lines = text.splitlines()
 
-    diffed = difflib.unified_diff(actual_lines, expected_lines, lineterm="")
+    differences = []
 
-    return "\n".join(diffed)
+    for i in range(len(expected_lines)):
+
+        try:
+            actual = actual_lines[i]
+
+            expected = expected_lines[i]
+
+            if actual != expected:
+                difference = _format_difference(actual, expected, i + 1)
+                differences.append(difference)
+
+        except IndexError:
+            break
+
+    actual_lines_length = len(actual_lines)
+    expected_lines_length = len(expected_lines)
+
+    if actual_lines_length < expected_lines_length:
+
+        difference = _format_difference(
+            "", expected_lines[actual_lines_length], actual_lines_length
+        )
+        differences.append(difference)
+
+    elif actual_lines_length > expected_lines_length:
+
+        difference = _format_difference(
+            "", actual_lines[expected_lines_length], expected_lines_length
+        )
+        differences.append(difference)
+
+    return differences
+
+
+def _format_difference(actual, expected, line_num):
+
+    msg = f"""
+        Difference on line {line_num}:
+
+        Actual:
+
+        {actual}
+
+        Expected:
+
+        {expected}
+    """
+
+    return dedent(msg)
