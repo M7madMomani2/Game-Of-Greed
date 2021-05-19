@@ -23,7 +23,7 @@ class GameLogic:
     @staticmethod
     def get_scorers(roll_dice):
         """
-        function will take a tuple of integers that represent a dice roll and return the srore of this roll 
+        function will take a tuple of integers that represent a dice roll and return the score of this roll 
         """
         score = 0
         counting = Counter(roll_dice)
