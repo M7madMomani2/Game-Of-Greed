@@ -1,171 +1,90 @@
-
-from random import randint
 from collections import Counter
+from random import randint
+
 
 class GameLogic:
-    def __init__(self) :
-        counter=0
+    @staticmethod
+    def roll_dice(num=6):
+        # version_1
+
+        return tuple([randint(1, 6) for _ in range(num)])
+
+    @staticmethod
+    def calculate_score(dice):
+        """
+        dice is a tuple of integers that represent the user's selected dice pulled out from current roll
+        """
+        # version_1
+
+        if len(dice) > 6:
+            raise Exception("Cheating Cheater!")
+
+        counts = Counter(dice)
+
+        if len(counts) == 6:
+            return 1500
+
+        if len(counts) == 3 and all(val == 2 for val in counts.values()):
+            return 1500
+
+        score = 0
+
+        ones_used = fives_used = False
+
+        for num in range(1, 6 + 1):
+
+            pip_count = counts[num]
+
+            if pip_count >= 3:
+
+                if num == 1:
+
+                    ones_used = True
+
+                elif num == 5:
+
+                    fives_used = True
+
+                score += num * 100
+
+                # handle 4,5,6 of a kind
+                pips_beyond_3 = pip_count - 3
+
+                score += score * pips_beyond_3
+
+                # bug if 2 threesomes? Let's test it
+
+                # 1s are worth 10x
+                if num == 1:
+                    score *= 10
+
+        if not ones_used:
+            score += counts.get(1, 0) * 100
+
+        if not fives_used:
+            score += counts.get(5, 0) * 50
+
+        return score
 
     @staticmethod
     def validate_keepers(roll, keepers):
-        roll_saved = Counter(roll)
-        saved_inputs = Counter(keepers)
-        check = True
-        for i in saved_inputs:
-            if saved_inputs[i] > roll_saved[i]:
-                check = False
-        return check
+        # version_3
+
+        return not Counter(keepers) - Counter(roll)
 
     @staticmethod
-    def roll_dice(num_dice):
-        return tuple([randint(1,6) for _ in range(0,num_dice)])
-   
+    def get_scorers(dice):
+        # version_4
+        all_dice_score = GameLogic.calculate_score(dice)
 
+        if all_dice_score == 0:
+            return tuple()
 
+        scorers = []
 
-
-    @staticmethod
-    def get_scorers(roll_dice):
-
-        score =[]
-        counting = Counter(roll_dice)
-        dice_common = counting.most_common()
-        # return tuple(dice_common)
-        if len(dice_common)== 6:
-            score=roll_dice
-            # self.counter+=6
-            return  score
-        if len(dice_common)== 3:
-            if dice_common[0][1]==2 and dice_common[1][1]==2 and dice_common[2][1]==2:
-                score.append(dice_common[0][0])
-                score.append(dice_common[1][0])
-                score.append(dice_common[2][0])
-                # self.counter+=6
-                return  score
-
-        for i in dice_common:
-            if i[1]<3:    #[(1,2)]
-                if i[0]==1:
-                    score.append(i[0])
-
-                    # self.counter+=1*i[1]
-                 
-                elif  i[0]==5:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-            if i[1]==3:
-                if i[0]==1:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-                else:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-            if i[1]==4:
-                if i[0]==1:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-                else:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-            if i[1]==5:
-                if i[0]==1:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-                else:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-            if i[1]==6:
-                if i[0]==1:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-                else:
-                    score.append(i[0])
-                    # self.counter+=1*i[1]
-                 
-        return score
-
-
-
-        return tuple()
-
-
-
-
-
-
-
-
-    @staticmethod
-    def calculate_score(roll_dice):
-        """
-        function will take a tuple of integers that represent a dice roll and return the score of this roll 
-        """
-        score = 0
-        counting = Counter(roll_dice)
-        dice_common = counting.most_common()
-        # return tuple(dice_common)
-        if len(dice_common)== 6:
-            score=1500
-            # self.counter+=6
-            return  score
-        if len(dice_common)== 3:
-            if dice_common[0][1]==2 and dice_common[1][1]==2 and dice_common[2][1]==2:
-                score=1500
-                # self.counter+=6
-                return  score
-
-        for i in dice_common:
-            if i[1]<3:    #[(1,2)]
-                if i[0]==1:
-                    score+=i[1]*100
-                    # self.counter+=1*i[1]
-                 
-                elif  i[0]==5:
-                    score+=i[1]*50
-                    # self.counter+=1*i[1]
-            if i[1]==3:
-                if i[0]==1:
-                    score+=1000
-                    # self.counter+=1*i[1]
-                else:
-                    score+=i[0]*100
-                    # self.counter+=1*i[1]
-            if i[1]==4:
-                if i[0]==1:
-                    score+=2000
-                    # self.counter+=1*i[1]
-                else:
-                    score+=i[0]*200
-                    # self.counter+=1*i[1]
-            if i[1]==5:
-                if i[0]==1:
-                    score+=3000
-                    # self.counter+=1*i[1]
-                else:
-                    score+=i[0]*300
-                    # self.counter+=1*i[1]
-            if i[1]==6:
-                if i[0]==1:
-                    score+=4000
-                    # self.counter+=1*i[1]
-                else:
-                    score+=i[0]*400
-                    # self.counter+=1*i[1]
-                 
-        return score
-        
-class Banker :
-    def __init__(self):
-        self.shelved=0
-        self.balance=0
-
-    def shelf (self,points):
-        self.shelved+=points
-    def bank(self):
-        self.balance=0
-        self.balance+=self.shelved
-        self.shelved=0
-        return self.balance
-
-    def clear_shelf (self):
-        self.shelved=0
+        for i in range(len(dice)):
+            sub_roll = dice[:i] + dice[i + 1:]
+            sub_score = GameLogic.calculate_score(sub_roll)
+            if sub_score != all_dice_score:
+                scorers.append(dice[i])
+        return tuple(scorers)
