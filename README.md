@@ -7,7 +7,7 @@ The game of Greed is a dice game between two players. ... The player whose turn 
 https://github.com/M7madMomani2/Game-Of-Greed/pull/2
 ## Version 1.2 lab 07
 https://github.com/M7madMomani2/Game-Of-Greed/pull/6
-## Version 1.3 lab 07
+## Version 1.3 lab 08
 https://github.com/M7madMomani2/Game-Of-Greed/pull/9
 
 - Rawan Abu Yasein 
