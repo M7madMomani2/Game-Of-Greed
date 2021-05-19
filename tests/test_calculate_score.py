@@ -5,91 +5,91 @@ pytestmark = [pytest.mark.version_1]
 
 
 def test_single_five():
-    actual = GameLogic.get_scorers((5,))
+    actual = GameLogic.calculate_score((5,))
     expected = 50
     assert actual == expected
 
 
 def test_single_one():
-    actual = GameLogic.get_scorers((1,))
+    actual = GameLogic.calculate_score((1,))
     expected = 100
     assert actual == expected
 
 
 def test_two_fives():
-    actual = GameLogic.get_scorers((5, 5))
+    actual = GameLogic.calculate_score((5, 5))
     expected = 100
     assert actual == expected
 
 
 def test_two_ones():
-    actual = GameLogic.get_scorers((1, 1))
+    actual = GameLogic.calculate_score((1, 1))
     expected = 200
     assert actual == expected
 
 
 def test_one_and_five():
-    actual = GameLogic.get_scorers((1, 5))
+    actual = GameLogic.calculate_score((1, 5))
     expected = 150
     assert actual == expected
 
 
 def test_zilch():
-    actual = GameLogic.get_scorers((2,))
+    actual = GameLogic.calculate_score((2,))
     expected = 0
     assert actual == expected
 
 
 def test_three_fives():
-    actual = GameLogic.get_scorers((5, 5, 5, 2, 2, 3))
+    actual = GameLogic.calculate_score((5, 5, 5, 2, 2, 3))
     expected = 500
     assert actual == expected
 
 
 def test_three_ones():
-    actual = GameLogic.get_scorers((1, 1, 1, 2, 3, 4))
+    actual = GameLogic.calculate_score((1, 1, 1, 2, 3, 4))
     expected = 1000
     assert actual == expected
 
 
 def test_three_ones_and_a_five():
-    actual = GameLogic.get_scorers((1, 1, 1, 5))
+    actual = GameLogic.calculate_score((1, 1, 1, 5))
     expected = 1050
     assert actual == expected
 
 
 def test_straight():
-    actual = GameLogic.get_scorers((1, 6, 3, 2, 5, 4))
+    actual = GameLogic.calculate_score((1, 6, 3, 2, 5, 4))
     expected = 1500
     assert actual == expected
 
 
 def test_three_of_a_kind():
-    actual = GameLogic.get_scorers((2, 2, 2))
+    actual = GameLogic.calculate_score((2, 2, 2))
     expected = 200
     assert actual == expected
 
 
 def test_four_of_a_kind():
-    actual = GameLogic.get_scorers((2, 2, 2, 2))
+    actual = GameLogic.calculate_score((2, 2, 2, 2))
     expected = 400
     assert actual == expected
 
 
 def test_five_of_a_kind():
-    actual = GameLogic.get_scorers((2, 2, 2, 2, 2))
+    actual = GameLogic.calculate_score((2, 2, 2, 2, 2))
     expected = 600
     assert actual == expected
 
 
 def test_six_of_a_kind():
-    actual = GameLogic.get_scorers((2, 2, 2, 2, 2, 2))
+    actual = GameLogic.calculate_score((2, 2, 2, 2, 2, 2))
     expected = 800
     assert actual == expected
 
 
 def test_six_ones():
-    actual = GameLogic.get_scorers((1, 1, 1, 1, 1, 1))
+    actual = GameLogic.calculate_score((1, 1, 1, 1, 1, 1))
     expected = 4000
     assert actual == expected
 
@@ -140,5 +140,5 @@ def test_six_ones():
     ],
 )
 def test_all(test_input, expected):
-    actual = GameLogic.get_scorers(test_input)
+    actual = GameLogic.calculate_score(test_input)
     assert actual == expected

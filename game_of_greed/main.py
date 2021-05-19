@@ -1,6 +1,6 @@
   
 from collections import Counter
-from game_logic import GameLogic,Banker
+from game_of_greed.game_logic import GameLogic,Banker
 
 class Game:
     def __init__(self):
@@ -82,7 +82,7 @@ class Game:
         roller = self.roller(self.dice_num_remaining)
         print(f"*** {' '.join([str(i) for i in roller])} ***")
         new_list = list(roller)
-        validate = self.game.get_scorers(tuple([int(x) for x in new_list]))
+        validate = self.game.calculate_score(tuple([int(x) for x in new_list]))
 
         if validate != 0:   
             dice_to_keep = input("Enter dice to keep, or (q)uit:\n> ")
@@ -103,7 +103,7 @@ class Game:
                         valid = self.validate_in(dice_to_keep, roller)
 
                 new_list = list(dice_to_keep)
-                total = self.game.get_scorers(tuple([int(x) for x in new_list]))
+                total = self.game.calculate_score(tuple([int(x) for x in new_list]))
                 self.num_shelf += total
                 self.valid_cases(new_list)
 
