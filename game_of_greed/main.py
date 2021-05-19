@@ -1,6 +1,6 @@
   
 from collections import Counter
-from game_logic import GameLogic,Banker
+from game_of_greed.game_logic import GameLogic,Banker
 
 class Game:
     def __init__(self):
