@@ -1,10 +1,10 @@
   
 from collections import Counter
-from game_of_greed.game_logic import GameLogic,Banker
+from game_logic import GameLogic,Banker
 
 class Game:
-    def __init__(self, roller=None):
-        self.roller = roller or GameLogic.roll_dice
+    def __init__(self):
+        self.roller = None
         self.game = GameLogic()
         self.banker = Banker()
         self.starting_round = 1
@@ -14,6 +14,7 @@ class Game:
         self.flag = False
       
     def play(self,roller):
+        self.roller = roller or GameLogic.roll_dice
         print('Welcome to Game of Greed')
         user_input = input("(y)es to play or (n)o to decline\n> ")
         if user_input == 'n':
@@ -111,4 +112,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.play()
+    game.play(None)
