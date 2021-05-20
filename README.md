@@ -8,7 +8,7 @@ https://github.com/M7madMomani2/Game-Of-Greed/pull/2
 ## Version 1.2 lab 07
 https://github.com/M7madMomani2/Game-Of-Greed/pull/6
 ## Version 1.3 lab 08
-https://github.com/M7madMomani2/Game-Of-Greed/pull/9
+https://github.com/M7madMomani2/Game-Of-Greed/pull/11
 ## Version 1.4 lab 09
 https://github.com/M7madMomani2/Game-Of-Greed/pull/12
 - Rawan Abu Yasein 
